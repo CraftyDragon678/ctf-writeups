@@ -1,5 +1,8 @@
 # trust ctf
 
+![scoreboard](scoreboard.png)
+4th!
+
 ## REV
 
 ### MESS
