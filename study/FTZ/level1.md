@@ -1,3 +1,5 @@
+PW : `level1`
+
 접속을 해 준 뒤 파일의 리스트를 보면 이와 같이 뜬다.
 ```bash
 [level1@ftz level1]$ ls -al

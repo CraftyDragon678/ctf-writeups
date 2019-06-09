@@ -1,3 +1,5 @@
+PW : `hacker or cracker`
+
 이번에도 hint 파일을 출력해보면 이렇게 뜬다.
 ```bash
 [level2@ftz level2]$ cat hint
