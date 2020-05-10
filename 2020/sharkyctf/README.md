@@ -1,11 +1,11 @@
 # SharkyCTF writeup
 
-[Blockchain](#Blockchain)<br>
-[Misc](#Misc)<br>
-[Network](#Net)<br>
-[Pwnable](#Pwn)<br>
-[Reversing](#Rev)<br>
-[Web](#Web)<br>
+[Blockchain](#blockchain-2)<br>
+[Misc](#misc-1)<br>
+[Network](#net-1)<br>
+[Pwnable](#pwn-1)<br>
+[Reversing](#rev-3)<br>
+[Web](#web-3)<br>
 
 ## Blockchain (2)
 
