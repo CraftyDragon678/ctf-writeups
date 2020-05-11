@@ -11,6 +11,8 @@
 
 [Network](#net-1)
 
+- [RattataTACACS](#RattataTACACS167)
+
 [Pwnable](#pwn-1)
 
 [Reversing](#rev-3)
@@ -159,6 +161,22 @@ pdf파일 버전이 1.2일때 잘 된다.
 > shkCTF{Schr0diNgeR\_\_w4s_A_gRea7\_\_p01yg1o7_4e78011325dfbe4a05fd533ea422cc94}
 
 ## Net (1)
+
+### RattataTACACS(167)
+
+wireshark로 까보면 TFTP통신을 하는 쪽에서 key 7으로 시작하는 패킷을 볼 수 있다.\
+`tacacs-server host 192.168.1.100 key 7 0325612F2835701E1D5D3F2033`
+
+[password cracker](https://www.ifm.net.nz/cookbooks/passwordcracker.html)를 사용해서
+키를 알아낼 수 있었다.
+
+key는 `AZDNZ1234FED`이고, 이를 다음과 같이 wireshark preferences에 넣어주면 TACACS+ 패킷을 해석할 수 있다.
+
+![TACACS+ key](Net/tacacsPlus%20key.png)
+
+![TACACS+ flag](Net/tacacsFlag.png)
+
+> shkCTF{T4c4c5_ch4ll3n63_br0}
 
 ## Pwn (1)
 
