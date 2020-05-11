@@ -19,6 +19,10 @@
 
 [Reversing](#rev-3)
 
+- [Simple](#simple89)
+- [z 3 r o b o t w a v e s](#z-3-r-o-b-o-t-w-a-v-e-s188)
+- [Miss Direction](#miss-direction400)
+
 [Web](#web-3)
 
 전체적으로 플래그를 **절대** 게싱하지 못하는 문제였다. 길기도 하고 해시가 들어 있었다..ㄷ
@@ -211,6 +215,48 @@ p.interactive()
 > shkCTF{#Fr33_fL4g!!\_<3}
 
 ## Rev (3)
+
+### Simple(89)
+
+[asm코드](Rev/simple.asm)를 준다. 어떠한 아키텍처를 특정해서 만들어진 것은 아니기에 컴파일 할 수 있어 보이지는 않는다.
+
+그럼 직접 어셈블리 코드를 해석해야한다.
+
+```py
+some = [10, 2, 30, 15, 3, 7, 4, 2, 1, 24, 5, 11, 24, 4, 14,
+        13, 5, 6, 19, 20, 23, 9, 10, 2, 30, 15, 3, 7, 4, 2, 1, 24]
+second = [0x57, 0x40, 0xa3, 0x78, 0x7d, 0x67, 0x55, 0x40, 0x1e, 0xae, 0x5b, 0x11, 0x5d, 0x40, 0xaa,
+          0x17, 0x58, 0x4f, 0x7e, 0x4d, 0x4e, 0x42, 0x5d, 0x51, 0x57, 0x5f, 0x5f, 0x12, 0x1d, 0x5a, 0x4f, 0xbf]
+print("some len: %d" % len(some))
+print("second len: %d" % len(second))
+
+#! rcx = payload length
+#! rdx = end address of payload
+
+# dil: 8bit (ff) -> a char of payload
+
+#! al = payload from back
+#! dil = some from back
+
+#! al += dil
+
+#! rax ^= 42
+#! r10 = second from back
+# a == r10
+
+flag = ""
+
+for i in range(len(some)):
+    flag += chr((second[i] ^ 42) - some[i])
+
+print(flag)
+```
+
+설명은 여기에 ~~라업 쓰기 귀찮아서 따로 설명 안하는건 안 비밀~~
+
+### z 3 r o b o t w a v e s(188)
+
+### Miss Direction(400)
 
 ## Steganography (0)
 
