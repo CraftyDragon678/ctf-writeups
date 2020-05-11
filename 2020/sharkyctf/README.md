@@ -254,9 +254,52 @@ print(flag)
 
 설명은 여기에 ~~라업 쓰기 귀찮아서 따로 설명 안하는건 안 비밀~~
 
+> shkCTF{h3ll0_fr0m_ASM_my_fr13nd}
+
 ### z 3 r o b o t w a v e s(188)
 
+IDA로 까면 check_flag 함수에서 플래크가 맞는지 체크하고 맞다면 플래그는 `shkCTF{입력값}`이다.
+
+코드가 제법 길어서(100줄) [여기](Rev/z3_robot_get_flag.py)로 대체
+
+> shkCTF{cl4ss1c_z3\_\_\_t0_st4rt\_:)}
+
 ### Miss Direction(400)
+
+후.. 원래 정적으로 하려고 했는데 동적으로 해야 가능한? 문제로 보인다.\
+이유는 TLSCallback에서 바이트 코드를 동적으로 바꾼다.
+
+원래 main함수에서 check를 타고 들어가는데 이는 페이크\
+실제로 check함수에서 볼 수 있는 플래그는 앞뒤 괄호를 제외하고 23자리로\
+`shkCTF{definitly_not_the_flagg}`이다.
+
+여기서 TLS콜백이란, main 함수 전에 실행되어서
+안티 디버깅에 주로 사용되는 것이라고 한다.
+
+아니나 다를까 TLS콜백에 보면 byte_404038 == 1 이면 ExitProcess를 하는 것으로 보아
+안티 디버깅 코드가 들어있고, 아무리 봐도 플래그와 연관된 것은 보이지 않는다.
+
+그 전 sub_4013C0에서 디버깅을 탐지 하는데 `sp-analysis failed`가 발생해서 분석을 하지 못했다. 그래서 동적 디버깅을 했다. 어처피 anti-disas가 있어서 동적으로 할 수밖에 없었다.
+
+무튼 x64dbg로 안티 디버깅을 요리조리 뚫고 들어가면
+루프를 돌면서 코드가 수정되는 것을 볼 수고있고
+코드가 모두 수정된 후 보면 char 배열과 밑에 복호화(암호화) 코드가 있다
+
+암호화가 ( X + 0x55 ) ^ 0x42 로 이루어 지므로 반대로
+주어진 char 배열을 xor한 후 빼면 된다
+
+```py
+# in TLS callback (can't analyze in IDA)
+a = 0x8b838af6facb8383f5f4fa828af68e86818bf6f9c7c783
+a = hex(a)[2:]
+
+for i in range(23):
+    print(chr((int(a[i*2:i*2+2], 16) ^ 0x42) - 0x55), end="")
+```
+
+올려둔 바이너리는 안티 디버깅 패치를 한 바이너리다... 만 디버거에서 정상적인 실행은 안될 것이다.
+
+> shkCTF{tls_c4llbacks_wont_f00l}
 
 ## Steganography (0)
 
