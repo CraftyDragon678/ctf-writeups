@@ -1,6 +1,5 @@
 # SharkyCTF writeup
 
-| |
 [Blockchain](#blockchain-2)
 
 - [Warmup](#warmup97)
