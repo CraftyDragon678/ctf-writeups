@@ -1,5 +1,6 @@
 # SharkyCTF writeup
 
+| |
 [Blockchain](#blockchain-2)
 
 - [Warmup](#warmup97)
@@ -379,7 +380,7 @@ http://containment-forever.sharkyctf.xyz/item/5e70da94d7b1600013655bb5
 
 자동으로 생성되는 ObjectId는 완전한 랜덤 값이 아니라서 충분히 맞출 수 있는 구조이다.
 
-https://docs.mongodb.com/manual/reference/method/ObjectId/\
+https://docs.mongodb.com/manual/reference/method/ObjectId/ \
 여기를 보면 알 수 있듯이 ObjectId는 timestamp, 랜덤값, 증가 값으로 이루어져있다.
 
 랜덤값은 증가 값이 다 차지 않는 이상 바뀌지 않는 것으로 알고 있다.
