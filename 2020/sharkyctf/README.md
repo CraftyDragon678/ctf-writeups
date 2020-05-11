@@ -65,10 +65,10 @@ withdraw 함수에 돈을 보내는 코드가 보이는 것 같고, 그 위에 `
 locked를 false로 만들 수 있는 함수는 `unlock`이고 그러면 그것을 호출하면 된다.\
 unlock이 성공적으로 호출 되기 위해선 0.005 ether를 보내야한다.
 
-ethereum IDE에서 컴파일을 한 후, contract를 추가 해주면 다음과 같이 뜬다
+ethereum IDE에서 컴파일을 한 후, contract를 추가 해주면 다음과 같이 뜬다\
 ![warmup](Blockchain/warmup.png)
 
-위쪽 value에 다음과 같이 0.005 ether를 넣어주고 unlock을다누른다
+위쪽 value에 다음과 같이 0.005 ether를 넣어주고 unlock을다누른다\
 ![warmup-value](Blockchain/warmup%20value.png)
 
 그리고 transaction이 confirm된 후 withdraw를 클릭하면 된다.
