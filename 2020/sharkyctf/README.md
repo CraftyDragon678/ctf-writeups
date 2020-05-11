@@ -133,32 +133,32 @@ Upload를 보면 다음과 같은 flask 코드가 있다.
 ```py
 @app.route('/upload', methods=["POST"])
 def get_file():
-	# Wenn die Anfrage eine Datei enthält
-	if 'file' in request.files:
-		new_file = request.files["file"]
-		filename = save_file(new_file)
+    # Wenn die Anfrage eine Datei enthält
+    if 'file' in request.files:
+        new_file = request.files["file"]
+        filename = save_file(new_file)
 
-		# Überprüfen Sie das Dateiformat
-		is_ELF = check_ELF(filename)
-		is_PDF = check_PDF(filename)
-		is_JAR = check_JAR(filename)
-		is_JPG = check_JPG(filename)
+        # Überprüfen Sie das Dateiformat
+        is_ELF = check_ELF(filename)
+        is_PDF = check_PDF(filename)
+        is_JAR = check_JAR(filename)
+        is_JPG = check_JPG(filename)
 
-		if is_ELF and is_JAR and is_PDF:
-			put_aside(filename)
-			return upload(msg=SECOND_PART_OF_FLAG)
-		elif is_ELF and is_JAR:
-			put_aside(filename)
-			return upload(msg=FIRST_PART_OF_FLAG)
-		elif is_JPG and is_JAR:
-			put_aside(filename)
-			return upload(msg=THIRD_PART_OF_FLAG)
-		else:
-			# Datei löschen
-			remove(filename)
-			return upload(error="Bad file")
-	else:
-		return upload(msg="No file detected")
+        if is_ELF and is_JAR and is_PDF:
+            put_aside(filename)
+            return upload(msg=SECOND_PART_OF_FLAG)
+        elif is_ELF and is_JAR:
+            put_aside(filename)
+            return upload(msg=FIRST_PART_OF_FLAG)
+        elif is_JPG and is_JAR:
+            put_aside(filename)
+            return upload(msg=THIRD_PART_OF_FLAG)
+        else:
+            # Datei löschen
+            remove(filename)
+            return upload(error="Bad file")
+    else:
+        return upload(msg="No file detected")
 ```
 
 `check~~~` 함수가 어떻게 생겼는지는 알 수 없지만, 예측을 해보면 파일의 signature가 있는지 보는 것 같다. 그래서 단순히 elf, jar, pdf, jpg 파일을 하나씩 구해서 적절히 조합해 풀었다.
