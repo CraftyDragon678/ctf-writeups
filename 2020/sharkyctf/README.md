@@ -303,6 +303,15 @@ for i in range(23):
 
 올려둔 바이너리는 안티 디버깅 패치를 한 바이너리다... 만 디버거에서 정상적인 실행은 안될 것이다.
 
+좀더 TLS 콜백에 대해서 설명을 하자면 main함수 전에서 실행되니깐
+fake flag를 체크하는 check함수를 호출 하기전 있던 sleep또한
+적용되지 않고 바로 풀린다.
+
+애초에 check 함수를 호출하기 전 인자로 우리가 입력한 플래그가 들어있는 포인터 변수의 값이 바뀌기 때문에
+definitly_not_the_flagg를 넣어도 아무런 증상이 나타나지 않았던 것 같다.
+
+~~믿기지 않으면 직접 해보시라 `./binary tls_c4llbacks_wont_f00l`~~
+
 > shkCTF{tls_c4llbacks_wont_f00l}
 
 ## Steganography (0)
