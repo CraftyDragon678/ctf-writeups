@@ -1,0 +1,3 @@
+[submodule "sstf-writeup"]
+	path = sstf-writeup
+	url = git@github.com:CraftyDragon678/sstf-writeup.git
